@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/popover";
 import useLocations from "@/hooks/useLocations";
 import { ChevronsUpDown } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { useRouter } from "next/router";
 import queryString from "query-string";
 import { useState } from "react";
@@ -54,7 +55,9 @@ export default function HotelSearch() {
               className="px-2 py-1 hover:cursor-pointer hover:bg-gray-300"
               key={idx}
             >
-              {item.title}
+              <div className="flex flex-row">
+              <MapPin className="mr-2 mt-1" size={16} />{item.title}
+              </div>
             </div>
           ))}
         </PopoverContent>
