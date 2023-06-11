@@ -48,7 +48,7 @@ export default function HotelSearch() {
         arrivalLocationId: selectedLocation.value,
         nationality,
       };
-      console.log(queryObj)
+      console.log(queryObj);
       router.push(`/hotel/list?${queryString.stringify(queryObj)}`);
     }
   };

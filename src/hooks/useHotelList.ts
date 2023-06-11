@@ -9,6 +9,8 @@ const responseSchema = z.object({
         min: z.number(),
         max: z.number(),
       }),
+      ratings: z.array(z.number()),
+      stars: z.array(z.number()),
     }),
     items: z.array(
       z.object({
@@ -50,12 +52,17 @@ const responseSchema = z.object({
             name: z.string(),
           }),
         ),
-      })
+      }),
     ),
   }),
 });
 
-const searchHotels = async (checkIn: string | undefined, checkOut: string | undefined, arrivalLocationId: string, nationality: string | undefined) => {
+const searchHotels = async (
+  checkIn: string | undefined,
+  checkOut: string | undefined,
+  arrivalLocationId: string,
+  nationality: string | undefined,
+) => {
   const url = "https://api.zarentravel.net/api/v1/zaren-travel/hotel/search";
 
   const response = await fetch(url, {
@@ -102,10 +109,19 @@ const searchHotels = async (checkIn: string | undefined, checkOut: string | unde
   return parsedData.data.data;
 };
 
-export default function useHotelSearch(checkIn: string | undefined, checkOut: string | undefined, arrivalLocationId: string, nationality: string | undefined) {
-  return useQuery(["hotelSearch", checkIn, checkOut, arrivalLocationId, nationality], () => searchHotels(checkIn, checkOut, arrivalLocationId, nationality), {
-    enabled: true,
-    retry: 3,
-    retryDelay: 1000,
-  });
+export default function useHotelSearch(
+  checkIn: string | undefined,
+  checkOut: string | undefined,
+  arrivalLocationId: string,
+  nationality: string | undefined,
+) {
+  return useQuery(
+    ["hotelSearch", checkIn, checkOut, arrivalLocationId, nationality],
+    () => searchHotels(checkIn, checkOut, arrivalLocationId, nationality),
+    {
+      enabled: true,
+      retry: 3,
+      retryDelay: 1000,
+    },
+  );
 }

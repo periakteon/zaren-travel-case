@@ -4,11 +4,11 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'media.dev.paximum.com',
-        port: '',
-        pathname: '/',
-      }
+        protocol: "https",
+        hostname: "media.dev.paximum.com",
+        port: "",
+        pathname: "/",
+      },
     ],
   },
 };
