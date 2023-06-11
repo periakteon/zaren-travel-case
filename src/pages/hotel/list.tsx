@@ -96,8 +96,6 @@ export default function HotelList() {
           </div>
         </div>
       </div>
-
-      {/* Sağ Taraftaki Bölüm */}
       <div className="w-full lg:w-full p-4">
         <h1 className="text-2xl font-bold mb-2 text-center">
           Select your accommodation in {location}
@@ -122,7 +120,6 @@ export default function HotelList() {
               </Alert>
             </div>
           )}
-          {/* Hotel Bilgileri Sağ Bölüm */}
           {data?.items.map((item, id) => (
             <>
               <div

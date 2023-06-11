@@ -13,7 +13,7 @@ import {
 import { PopoverContent } from "@radix-ui/react-popover";
 import { format } from "date-fns";
 import { useAtom } from "jotai";
-import { ChevronsUpDown, MapPin } from "lucide-react";
+import { ChevronsUpDown, MapPin, Search } from "lucide-react";
 import { useRouter } from "next/router";
 import queryString from "query-string";
 import { useState } from "react";
@@ -130,7 +130,8 @@ export default function SearchLocation() {
         </div>
         <div className="flex justify-center mt-4">
           <Button className="w-[280px]" onClick={handleSearch}>
-            Ara
+            <Search className="mr-2" />
+            Search
           </Button>
         </div>
       </main>
