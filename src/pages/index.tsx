@@ -46,6 +46,8 @@ export default function HotelSearch() {
         checkOut: formattedCheckOutDate,
         hotel: selectedLocation.title,
         arrivalLocationId: selectedLocation.value,
+        page: "1",
+        pageSize: "10",
         nationality,
       };
       console.log(queryObj);

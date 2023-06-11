@@ -63,6 +63,8 @@ const searchHotels = async (
   checkOut: string | undefined,
   arrivalLocationId: string,
   nationality: string | undefined,
+  page: string | undefined,
+  pageSize: string | undefined,
 ) => {
   const url = "https://api.zarentravel.net/api/v1/zaren-travel/hotel/search";
 
@@ -72,8 +74,8 @@ const searchHotels = async (
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      page: 1,
-      pageSize: 10,
+      page,
+      pageSize,
       sortBy: 4,
       checkAllotment: true,
       checkStopSale: true,
@@ -115,10 +117,12 @@ export default function useHotelSearch(
   checkOut: string | undefined,
   arrivalLocationId: string,
   nationality: string | undefined,
+  page: string | undefined,
+  pageSize: string | undefined,
 ) {
   return useQuery(
-    ["hotelSearch", checkIn, checkOut, arrivalLocationId, nationality],
-    () => searchHotels(checkIn, checkOut, arrivalLocationId, nationality),
+    ["hotelSearch", checkIn, checkOut, arrivalLocationId, nationality, page, pageSize],
+    () => searchHotels(checkIn, checkOut, arrivalLocationId, nationality, page, pageSize),
     {
       enabled: true,
       retry: 3,

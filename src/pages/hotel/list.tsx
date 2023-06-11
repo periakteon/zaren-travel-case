@@ -1,8 +1,10 @@
 import SkeletonLoading from "@/components/SkeletonLoading";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import useHotelSearch from "@/hooks/useHotelList";
+import { AlertCircle } from "lucide-react";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 
@@ -12,6 +14,8 @@ export interface ParsedListQuery extends ParsedUrlQuery {
   checkIn: string | undefined;
   checkOut: string | undefined;
   nationality: string | undefined;
+  page: string | undefined;
+  pageSize: string | undefined;
 }
 
 export default function HotelList() {
@@ -22,12 +26,16 @@ export default function HotelList() {
   const checkIn = query["checkIn"];
   const checkOut = query["checkOut"];
   const nationality = query["nationality"];
+  const page = query["page"];
+  const pageSize = query["pageSize"];
 
-  const { isLoading, error, data } = useHotelSearch(
+  const { isLoading, isError, data } = useHotelSearch(
     checkIn,
     checkOut,
     arrivalLocationId,
     nationality,
+    page,
+    pageSize,
   );
 
   return (
@@ -52,6 +60,13 @@ export default function HotelList() {
               <SkeletonLoading />
             </>
           )}
+          {isError && <div className="w-1/3 m-auto"><Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>
+              Something went wrong. Please try again.
+            </AlertDescription>
+          </Alert></div>}
           {/* Hotel Bilgileri Sağ Bölüm */}
           {data?.items.map((item, id) => (
             <>
