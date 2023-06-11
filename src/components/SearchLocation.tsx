@@ -1,6 +1,7 @@
 import CheckInDatePicker from "./CheckInDatePicker";
 import CheckOutDatePicker from "./CheckOutDatePicker";
 import { Nationality } from "./Nationality";
+import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Popover, PopoverTrigger } from "./ui/popover";
@@ -17,7 +18,6 @@ import { AlertCircle, ChevronsUpDown, MapPin, Search } from "lucide-react";
 import { useRouter } from "next/router";
 import queryString from "query-string";
 import { useState } from "react";
-import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 
 export default function SearchLocation() {
   const [open, setOpen] = useState<boolean>(false);

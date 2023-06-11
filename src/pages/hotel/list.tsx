@@ -17,7 +17,7 @@ import useIsMobile from "@/hooks/useIsMobile";
 import { AlertCircle } from "lucide-react";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export interface ParsedListQuery extends ParsedUrlQuery {
   hotel: string;
@@ -39,6 +39,7 @@ export default function HotelList() {
   const nationality = query["nationality"];
   const page = query["page"];
   const pageSize = query["pageSize"];
+  const [currentPage, setCurrentPage] = useState<number>(parseInt(page || "1"));
   const [filterParams, setFilterParams] = useState<FilterParams>({
     amenities: [],
     types: [],
@@ -59,9 +60,6 @@ export default function HotelList() {
     pageSize,
   );
 
-  // TODO:filter params aktif olduğunda page'i 0'a çek ki 2.sayfadan veri çekmeye çalışıp boş veri getirmesin
-  // TODO: tekrar location search edilince location data'sına dönsün aksi takdirde filterData'ya dön
-  // TODO: filterData action'a geçtiğinde filterData'yı göster
   const {
     isLoading: filterIsLoading,
     isError: filterIsError,
@@ -71,7 +69,15 @@ export default function HotelList() {
   const filteredItems = filterData ? filterData.items : data?.items;
   const filteredItemsLength = filteredItems?.length || 0;
 
-  console.log("filter data", filterData);
+  const resetFilter = () => {
+    setFilterParams({
+      amenities: [],
+      types: [],
+      range: [],
+      ratings: [],
+      stars: [],
+    });
+  };
 
   const previousPage = () => {
     const currentPage = parseInt(page || "1");
@@ -86,6 +92,10 @@ export default function HotelList() {
   };
 
   const isFiltered = !!filterData;
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [filterParams, page]);
 
   return (
     <div className="flex flex-col lg:flex-row dark:bg-slate-900">
@@ -129,8 +139,8 @@ export default function HotelList() {
                                   types: e.valueOf()
                                     ? [...filterParams.types, key]
                                     : filterParams.types.filter(
-                                      (item) => item !== key,
-                                    ),
+                                        (item) => item !== key,
+                                      ),
                                 })
                               }
                             />
@@ -144,6 +154,72 @@ export default function HotelList() {
                         ),
                       )}
                   </div>
+                  <Separator className="mt-4" />
+                  <div>
+                    <h1 className="text-2xl mx-4 mt-4 font-bold">
+                      Customer Rating
+                    </h1>
+                    <div className="flex flex-wrap">
+                      {data?.filterParams?.ratings &&
+                        Object.entries(data?.filterParams?.ratings).map(
+                          ([key, value], idx) => (
+                            <Button
+                              key={idx}
+                              id="hotel-type"
+                              onClick={(e) =>
+                                setFilterParams({
+                                  ...filterParams,
+                                  ratings: e.valueOf()
+                                    ? [...filterParams.ratings, key]
+                                    : filterParams.ratings.filter(
+                                        (item) => item !== key,
+                                      ),
+                                })
+                              }
+                              className="ml-4 my-4 text-md"
+                            >
+                              👍 {value}
+                            </Button>
+                          ),
+                        )}
+                    </div>
+                  </div>
+                  <Separator className="mt-4" />
+                  <div>
+                    <h1 className="text-2xl mx-4 mt-4 font-bold">
+                      Rating Star
+                    </h1>
+                    <div className="flex flex-wrap">
+                      {data?.filterParams?.stars &&
+                        Object.entries(data?.filterParams?.stars).map(
+                          ([key, value], idx) => (
+                            <Button
+                              key={idx}
+                              id="hotel-type"
+                              onClick={(e) =>
+                                setFilterParams({
+                                  ...filterParams,
+                                  stars: e.valueOf()
+                                    ? [...filterParams.stars, key]
+                                    : filterParams.stars.filter(
+                                        (item) => item !== key,
+                                      ),
+                                })
+                              }
+                              className="ml-4 my-4 text-md"
+                            >
+                              ⭐{value}
+                            </Button>
+                          ),
+                        )}
+                    </div>
+                  </div>
+                  <Button
+                    onClick={resetFilter}
+                    className="text-lg font-bold w-full mt-6"
+                  >
+                    Clear All
+                  </Button>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -176,9 +252,7 @@ export default function HotelList() {
           )}
           {filteredItems?.map((item, idx) => (
             <div key={`item-${idx}`}>
-              <div
-                className="flex flex-col bg-gray-50 dark:bg-slate-950 rounded-lg shadow-lg p-4"
-              >
+              <div className="flex flex-col bg-gray-50 dark:bg-slate-950 rounded-lg shadow-lg p-4">
                 <>
                   <div className="flex flex-row justify-start mb-4">
                     <div className="w-full">
@@ -259,7 +333,8 @@ export default function HotelList() {
               onClick={previousPage}
               disabled={
                 (isFiltered && parseInt(page || "1") <= 1) ||
-                (!isFiltered && (!data || data?.items.length < parseInt(pageSize || "10")))
+                (!isFiltered &&
+                  (!data || data?.items.length < parseInt(pageSize || "10")))
               }
               className="px-4 py-2 mr-2 rounded"
             >
@@ -268,8 +343,10 @@ export default function HotelList() {
             <Button
               onClick={nextPage}
               disabled={
-                (isFiltered && (filteredItemsLength < parseInt(pageSize || "10"))) ||
-                (!isFiltered && (!data || data?.items.length < parseInt(pageSize || "10")))
+                (isFiltered &&
+                  filteredItemsLength < parseInt(pageSize || "10")) ||
+                (!isFiltered &&
+                  (!data || data?.items.length < parseInt(pageSize || "10")))
               }
               className="px-4 py-2 rounded"
             >

@@ -64,8 +64,8 @@ export type FilterParams = {
   amenities: string[];
   types: string[];
   range: number[];
-  ratings: number[];
-  stars: number[];
+  ratings: string[];
+  stars: string[];
 };
 
 const hotelFilter = async (
