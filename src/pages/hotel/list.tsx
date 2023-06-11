@@ -111,27 +111,27 @@ export default function HotelList() {
                   <SearchLocation />
                   <Separator className="mt-4" />
                   <div>
-                    <h1 className="text-xl ml-4 mt-4 font-bold">Hotel Type</h1>
+                    <h1 className="text-2xl ml-4 mt-4 font-bold">Hotel Type</h1>
                     {data?.filterParams?.types &&
                       Object.entries(data?.filterParams?.types).map(
-                        ([key, value], id) => (
-                          <div key={id}>
+                        ([key, value], idx) => (
+                          <div key={idx} className="ml-4 my-4">
                             <Checkbox
-                              id="terms"
+                              id="hotel-type"
                               onCheckedChange={(e) =>
                                 setFilterParams({
                                   ...filterParams,
                                   types: e.valueOf()
                                     ? [...filterParams.types, key]
                                     : filterParams.types.filter(
-                                        (item) => item !== key,
-                                      ),
+                                      (item) => item !== key,
+                                    ),
                                 })
                               }
                             />
                             <label
-                              htmlFor="terms"
-                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                              htmlFor="hotel-type"
+                              className="ml-2 text-lg leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                             >
                               {value}
                             </label>
@@ -169,10 +169,9 @@ export default function HotelList() {
               </Alert>
             </div>
           )}
-          {data?.items.map((item, id) => (
-            <>
+          {data?.items.map((item, idx) => (
+            <div key={`item-${idx}`}>
               <div
-                key={id}
                 className="flex flex-col bg-gray-50 dark:bg-slate-950 rounded-lg shadow-lg p-4"
               >
                 <>
@@ -205,9 +204,9 @@ export default function HotelList() {
                         {item.address}
                       </div>
                       <div className="flex flex-wrap">
-                        {item.themes.map((theme, index) => (
+                        {item.themes.map((theme, id) => (
                           <Badge
-                            key={index}
+                            key={id}
                             className={`border border-amber-600 text-amber-800 bg-amber-50 hover:bg-amber-100 dark:hover:bg-amber-900 dark:text-amber-400 dark:bg-amber-950 mr-2 mb-2`}
                           >
                             {theme.name}
@@ -215,9 +214,9 @@ export default function HotelList() {
                         ))}
                       </div>
                       <div className="flex flex-wrap">
-                        {item.boardGroups.map((boardGroup, index) => (
+                        {item.boardGroups.map((boardGroup, id) => (
                           <Badge
-                            key={index}
+                            key={id}
                             className={`border border-lime-600 text-lime-600 bg-green-50 hover:bg-green-100 dark:hover:bg-lime-900 dark:text-lime-500 dark:bg-lime-950 mr-2 mb-2`}
                           >
                             {boardGroup.name}
@@ -248,7 +247,7 @@ export default function HotelList() {
                 </div>
               </div>
               <Separator className="my-4" />
-            </>
+            </div>
           ))}
           <div className="flex justify-center mt-4">
             <Button

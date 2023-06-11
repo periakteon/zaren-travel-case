@@ -13,10 +13,11 @@ import {
 import { PopoverContent } from "@radix-ui/react-popover";
 import { format } from "date-fns";
 import { useAtom } from "jotai";
-import { ChevronsUpDown, MapPin, Search } from "lucide-react";
+import { AlertCircle, ChevronsUpDown, MapPin, Search } from "lucide-react";
 import { useRouter } from "next/router";
 import queryString from "query-string";
 import { useState } from "react";
+import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 
 export default function SearchLocation() {
   const [open, setOpen] = useState<boolean>(false);
@@ -25,7 +26,7 @@ export default function SearchLocation() {
   const [dateCheckOut] = useAtom(datePickerCheckOutAtom);
   const [nationality, setNationality] = useState<string>("TR");
   const router = useRouter();
-  const { isLoading, error, data } = useLocations(query);
+  const { isLoading, isError, error, data } = useLocations(query);
   const formattedCheckInDate = dateCheckIn
     ? format(dateCheckIn, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     : undefined;
@@ -49,6 +50,17 @@ export default function SearchLocation() {
   };
   return (
     <>
+      {isError && (
+        <div className="w-1/3 m-auto">
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>
+              Something went wrong. Please try again.
+            </AlertDescription>
+          </Alert>
+        </div>
+      )}
       <main className="w-full">
         <div className="flex justify-center mb-2">
           <span>Search for hotel:</span>
@@ -87,14 +99,14 @@ export default function SearchLocation() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
-              {data?.items.map((item, idx) => (
+              {data?.items.map((item, idxx) => (
                 <div
+                  key={idxx}
                   onClick={() => {
                     setQuery(item.title);
                     setOpen(false);
                   }}
                   className="px-2 py-1 text-sm hover:cursor-pointer hover:bg-accent"
-                  key={idx}
                 >
                   <div className="flex flex-row">
                     <MapPin className="mr-2 mt-1" size={16} strokeWidth={2} />{" "}
