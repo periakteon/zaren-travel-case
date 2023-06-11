@@ -47,5 +47,7 @@ const getLocations = async (query: string) => {
 export default function useLocations(query: string) {
   return useQuery(["locations", query], () => getLocations(query), {
     enabled: !!query,
+    retry: 3,
+    retryDelay: 1000,
   });
 }

@@ -45,9 +45,10 @@ export default function HotelSearch() {
         checkIn: formattedCheckInDate,
         checkOut: formattedCheckOutDate,
         hotel: selectedLocation.title,
-        locationId: selectedLocation.value,
+        arrivalLocationId: selectedLocation.value,
         nationality,
       };
+      console.log(queryObj)
       router.push(`/hotel/list?${queryString.stringify(queryObj)}`);
     }
   };
