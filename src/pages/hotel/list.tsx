@@ -68,6 +68,9 @@ export default function HotelList() {
     data: filterData,
   } = useHotelFilter(data?.cacheKey, filterParams, page, pageSize);
 
+  const filteredItems = filterData ? filterData.items : data?.items;
+  const filteredItemsLength = filteredItems?.length || 0;
+
   console.log("filter data", filterData);
 
   const previousPage = () => {
@@ -81,6 +84,8 @@ export default function HotelList() {
     const newPage = currentPage + 1;
     router.push({ query: { ...query, page: newPage.toString() } });
   };
+
+  const isFiltered = !!filterData;
 
   return (
     <div className="flex flex-col lg:flex-row dark:bg-slate-900">
@@ -149,7 +154,7 @@ export default function HotelList() {
         <h1 className="text-2xl font-bold mb-2 text-center">
           Select your accommodation in {location}
         </h1>
-        <h3 className="text-center">Among {data?.items.length} hotels</h3>
+        <h3 className="text-center">Among {filteredItems?.length} hotels</h3>
         <div className="grid grid-cols-1 gap-4 mt-10">
           {isLoading && (
             <>
@@ -169,7 +174,7 @@ export default function HotelList() {
               </Alert>
             </div>
           )}
-          {data?.items.map((item, idx) => (
+          {filteredItems?.map((item, idx) => (
             <div key={`item-${idx}`}>
               <div
                 className="flex flex-col bg-gray-50 dark:bg-slate-950 rounded-lg shadow-lg p-4"
@@ -252,14 +257,20 @@ export default function HotelList() {
           <div className="flex justify-center mt-4">
             <Button
               onClick={previousPage}
-              disabled={parseInt(page || "1") <= 1}
+              disabled={
+                (isFiltered && parseInt(page || "1") <= 1) ||
+                (!isFiltered && (!data || data?.items.length < parseInt(pageSize || "10")))
+              }
               className="px-4 py-2 mr-2 rounded"
             >
               Previous
             </Button>
             <Button
               onClick={nextPage}
-              disabled={data && data?.items.length < parseInt(pageSize || "10")}
+              disabled={
+                (isFiltered && (filteredItemsLength < parseInt(pageSize || "10"))) ||
+                (!isFiltered && (!data || data?.items.length < parseInt(pageSize || "10")))
+              }
               className="px-4 py-2 rounded"
             >
               Next
