@@ -44,7 +44,6 @@ export default function SearchLocation() {
         page: "1",
         pageSize: "10",
       };
-      console.log(queryObj);
       router.push(`/hotel/list?${queryString.stringify(queryObj)}`);
     }
   };

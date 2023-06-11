@@ -3,7 +3,6 @@ import { z } from "zod";
 
 const responseSchema = z.object({
   data: z.object({
-    cacheKey: z.string(),
     expiresOn: z.string(),
     filterParams: z
       .object({
@@ -13,7 +12,6 @@ const responseSchema = z.object({
         }),
         ratings: z.array(z.number()),
         stars: z.array(z.number()),
-        types: z.record(z.string()),
       })
       .nullable(),
     items: z.array(
@@ -62,91 +60,61 @@ const responseSchema = z.object({
   }),
 });
 
-const searchHotels = async (
-  checkIn: string | undefined,
-  checkOut: string | undefined,
-  arrivalLocationId: string,
-  nationality: string | undefined,
+export type FilterParams = {
+  amenities: string[];
+  types: string[];
+  range: number[];
+  ratings: number[];
+  stars: number[];
+};
+
+const hotelFilter = async (
+  cacheKey: string | undefined,
+  filterParams: FilterParams,
   page: string | undefined,
   pageSize: string | undefined,
 ) => {
-  const url = "https://api.zarentravel.net/api/v1/zaren-travel/hotel/search";
-
+  const url =
+    "https://api.zarentravel.net/api/v1/zaren-travel/hotel/search-filter";
   const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
+      cacheKey,
+      filterParams,
       page,
       pageSize,
       sortBy: 4,
-      checkAllotment: true,
-      checkStopSale: true,
-      getOnlyDiscountedPrice: false,
-      getOnlyBestOffers: true,
-      night: 1,
-      occupants: [
-        {
-          adults: 1,
-          children: [],
-          infants: 0,
-        },
-      ],
-      checkIn: checkIn,
-      checkOut: checkOut,
-      arrivalLocationId: arrivalLocationId,
-      nationality: nationality,
-      currency: "USD",
-      culture: "en-US",
     }),
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch hotel list");
+    throw new Error("Failed to fetch filter");
   }
 
   const data = await response.json();
-  console.log(data);
   const parsedData = responseSchema.safeParse(data);
-  console.log("parsedData", parsedData);
 
   if (!parsedData.success) {
-    throw new Error("Failed to parse hotel list");
+    throw new Error("Failed to parse filter response");
   }
 
   return parsedData.data.data;
 };
 
-export default function useHotelSearch(
-  checkIn: string | undefined,
-  checkOut: string | undefined,
-  arrivalLocationId: string,
-  nationality: string | undefined,
+export default function useHotelFilter(
+  cacheKey: string | undefined,
+  filterParams: FilterParams,
   page: string | undefined,
   pageSize: string | undefined,
 ) {
   return useQuery(
-    [
-      "hotelSearch",
-      checkIn,
-      checkOut,
-      arrivalLocationId,
-      nationality,
-      page,
-      pageSize,
-    ],
-    () =>
-      searchHotels(
-        checkIn,
-        checkOut,
-        arrivalLocationId,
-        nationality,
-        page,
-        pageSize,
-      ),
+    ["hotelFilter", cacheKey, filterParams, page, pageSize],
+    () => hotelFilter(cacheKey, filterParams, page, pageSize),
     {
-      enabled: true,
+      enabled: !!cacheKey,
       retry: 3,
       retryDelay: 1000,
     },

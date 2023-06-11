@@ -9,12 +9,15 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
+import useHotelFilter, { FilterParams } from "@/hooks/useFilter";
 import useHotelSearch from "@/hooks/useHotelList";
 import useIsMobile from "@/hooks/useIsMobile";
 import { AlertCircle } from "lucide-react";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
+import { useState } from "react";
 
 export interface ParsedListQuery extends ParsedUrlQuery {
   hotel: string;
@@ -36,6 +39,13 @@ export default function HotelList() {
   const nationality = query["nationality"];
   const page = query["page"];
   const pageSize = query["pageSize"];
+  const [filterParams, setFilterParams] = useState<FilterParams>({
+    amenities: [],
+    types: [],
+    range: [],
+    ratings: [],
+    stars: [],
+  });
 
   const isMobile = useIsMobile();
   const defaultValue = isMobile ? " " : "item-1";
@@ -47,6 +57,14 @@ export default function HotelList() {
     nationality,
     page,
     pageSize,
+  );
+
+  // filter params aktif olduğunda page'i 0'a çek ki 2.sayfadan veri çekmeye çalışıp boş veri getirmesin
+  //
+  const { isLoading: filterIsLoading, isError: filterIsError, data: filterData } = useHotelFilter(data?.cacheKey,
+    filterParams,
+    page,
+    pageSize
   );
 
   const previousPage = () => {
@@ -90,6 +108,24 @@ export default function HotelList() {
                 </AccordionTrigger>
                 <AccordionContent>
                   <SearchLocation />
+                  <Separator className="mt-4" />
+                  <div>
+                    <h1 className="text-xl ml-4 mt-4 font-bold">Hotel Type</h1>
+                    {data?.filterParams?.types && Object.entries(data?.filterParams?.types).map(([key, value], id) => (
+                      <div key={id}>
+                        <Checkbox id="terms" onCheckedChange={(e) => setFilterParams({
+                          ...filterParams,
+                          types: e.valueOf() ? [...filterParams.types, key] : filterParams.types.filter((item) => item !== key)
+                        })} />
+                        <label
+                          htmlFor="terms"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          {value}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
