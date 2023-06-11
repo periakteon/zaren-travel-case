@@ -33,7 +33,7 @@ export default function HotelList() {
   const pageSize = query["pageSize"];
 
   const isMobile = useIsMobile();
-  const defaultValue = isMobile ? "" : "item-1";
+  const defaultValue = isMobile ? " " : "item-1";
 
   const { isLoading, isError, data } = useHotelSearch(
     checkIn,
@@ -66,7 +66,12 @@ export default function HotelList() {
         </div>
         <div className="flex flex-col">
           <div>
-            <Accordion defaultValue={defaultValue} type="single" collapsible className="w-full">
+            <Accordion
+              defaultValue={defaultValue}
+              type="single"
+              collapsible
+              className="w-full"
+            >
               <AccordionItem value="item-1">
                 <AccordionTrigger className="justify-center">Filtreler</AccordionTrigger>
                 <AccordionContent>
