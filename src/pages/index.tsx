@@ -27,7 +27,7 @@ export default function HotelSearch() {
   const [query, setQuery] = useState("");
   const [dateCheckIn] = useAtom(datePickerCheckInAtom);
   const [dateCheckOut] = useAtom(datePickerCheckOutAtom);
-  const [nationality, setNationality] = useState("");
+  const [nationality, setNationality] = useState("TR");
   const router = useRouter();
   const { isLoading, error, data } = useLocations(query);
 

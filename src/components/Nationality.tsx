@@ -43,16 +43,15 @@ export function Nationality({
           className="w-[280px] justify-between"
         >
           {value
-            ? `${flags.find((f) => f.code === value)?.flag} ${
-                flags.find((f) => f.code === value)?.name
-              }`
-            : "Select nationality..."}
+            ? `${flags.find((f) => f.code === value)?.flag} ${flags.find((f) => f.code === value)?.name
+            }`
+            : `${flags.find((f) => f.code === "TR")?.flag} ${flags.find((f) => f.code === "TR")?.name}`}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[280px] p-0">
         <Command>
-          <CommandInput placeholder="Search nationality..." />
+          <CommandInput placeholder="Select nationality..." />
           <CommandEmpty>No nationality found.</CommandEmpty>
           <CommandGroup className={cn("w-full h-72 overflow-y-scroll")}>
             {flags.map((f) => (
