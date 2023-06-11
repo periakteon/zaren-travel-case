@@ -38,6 +38,18 @@ export default function HotelList() {
     pageSize,
   );
 
+  const previousPage = () => {
+    const currentPage = parseInt(page || "1");
+    const newPage = currentPage > 1 ? currentPage - 1 : 1;
+    router.push({ query: { ...query, page: newPage.toString() } });
+  };
+
+  const nextPage = () => {
+    const currentPage = parseInt(page || "1");
+    const newPage = currentPage + 1;
+    router.push({ query: { ...query, page: newPage.toString() } });
+  };
+
   return (
     <div className="flex flex-col lg:flex-row dark:bg-slate-900">
       {/* Sol Taraftaki Bölüm */}
@@ -149,6 +161,22 @@ export default function HotelList() {
               <Separator className="my-4" />
             </>
           ))}
+          <div className="flex justify-center mt-4">
+            <Button
+              onClick={previousPage}
+              disabled={parseInt(page || "1") <= 1}
+              className="px-4 py-2 mr-2 rounded"
+            >
+              Previous
+            </Button>
+            <Button
+              onClick={nextPage}
+              disabled={data && data?.items.length < parseInt(pageSize || "10")}
+              className="px-4 py-2 rounded"
+            >
+              Next
+            </Button>
+          </div>
         </div>
       </div>
     </div>

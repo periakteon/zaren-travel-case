@@ -11,7 +11,7 @@ const responseSchema = z.object({
       }),
       ratings: z.array(z.number()),
       stars: z.array(z.number()),
-    }),
+    }).nullable(),
     items: z.array(
       z.object({
         country: z.object({
@@ -104,6 +104,7 @@ const searchHotels = async (
 
   const data = await response.json();
   const parsedData = responseSchema.safeParse(data);
+  console.log("parsedData", parsedData);
 
   if (!parsedData.success) {
     throw new Error("Failed to parse hotel list");
