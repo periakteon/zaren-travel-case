@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import useHotelSearch from "@/hooks/useHotelList";
 import Image from "next/image";
@@ -33,7 +34,7 @@ export default function HotelList() {
   console.log("REACT QUERY", data);
 
   return (
-    <div>
+    <div className="flex flex-col">
       <h1>Hotel List</h1>
       {isLoading && (
         <div>
@@ -47,7 +48,7 @@ export default function HotelList() {
         </div>
       )}
       {data?.items.map((item, id) => (
-        <div key={id}>
+        <div key={id} className="">
           <h2>Şehir: {item.city.name}</h2>
           <p>Ülke: {item.country.name}</p>
           <img
@@ -71,28 +72,26 @@ export default function HotelList() {
             })}
           </p>
           <p>{item.stars}</p>
-          <p className="m-10">
+          <p className="m-5 flex">
             {item.themes.map((theme, index) => (
-              <span
+              <Badge
                 key={index}
-                className={`border border-amber-600 text-amber-800 bg-amber-50 rounded-full p-2 ${
-                  index !== item.themes.length - 1 ? "mr-2" : ""
-                }`}
+                className={`border border-amber-600 text-amber-800 bg-amber-50 hover:bg-amber-100 dark:hover:bg-amber-900 dark:text-amber-400 dark:bg-amber-950 ${index !== item.themes.length - 1 ? "mr-2" : ""
+                  }`}
               >
                 {theme.name}
-              </span>
+              </Badge>
             ))}
           </p>
-          <p className="m-10">
+          <p className="m-5 flex">
             {item.boardGroups.map((boardGroup, index) => (
-              <span
+              <Badge
                 key={index}
-                className={`border border-lime-600 text-lime-600 bg-gray-50 rounded-full p-2 ${
-                  index !== item.boardGroups.length - 1 ? "mr-2" : ""
-                }`}
+                className={`border border-lime-600 text-lime-600 bg-green-50 hover:bg-green-100 dark:hover:bg-lime-900 dark:text-lime-500 dark:bg-lime-950 ${index !== item.boardGroups.length - 1 ? "mr-2" : ""
+                  }`}
               >
                 {boardGroup.name}
-              </span>
+              </Badge>
             ))}
           </p>
         </div>

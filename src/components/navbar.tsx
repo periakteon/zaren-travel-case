@@ -21,11 +21,6 @@ export default function Navigation() {
               Home
             </NavigationMenuLink>
           </Link>
-          <Link href="/new-job" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Sign In
-            </NavigationMenuLink>
-          </Link>
           <NavigationMenuLink
             className={cn(
               navigationMenuTriggerStyle(),
