@@ -1,4 +1,7 @@
 import { ParsedListQuery } from "./hotel/list";
+import CheckInDatePicker from "@/components/CheckInDatePicker";
+import CheckOutDatePicker from "@/components/CheckOutDatePicker";
+import { Nationality } from "@/components/Nationality";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -7,6 +10,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import useLocations from "@/hooks/useLocations";
+import {
+  datePickerCheckInAtom,
+  datePickerCheckOutAtom,
+} from "@/stores/dateAtoms";
+import { format } from "date-fns";
+import { useAtom } from "jotai";
 import { ChevronsUpDown } from "lucide-react";
 import { MapPin } from "lucide-react";
 import { useRouter } from "next/router";
@@ -16,11 +25,22 @@ import { useState } from "react";
 export default function HotelSearch() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const { isLoading, error, data } = useLocations(query);
+  const [dateCheckIn] = useAtom(datePickerCheckInAtom);
+  const [dateCheckOut] = useAtom(datePickerCheckOutAtom);
   const router = useRouter();
+  const { isLoading, error, data } = useLocations(query);
+
+  const formattedCheckInDate = dateCheckIn
+    ? format(dateCheckIn, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    : undefined;
+  const formattedCheckOutDate = dateCheckOut
+    ? format(dateCheckOut, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    : undefined;
+  console.log(formattedCheckInDate);
+  console.log(formattedCheckOutDate);
 
   const handleSearch = () => {
-    const selectedLocation = data?.items.find(item => item.title === query);
+    const selectedLocation = data?.items.find((item) => item.title === query);
     if (selectedLocation) {
       const queryObj: ParsedListQuery = {
         hotel: selectedLocation.title,
@@ -31,8 +51,11 @@ export default function HotelSearch() {
   };
 
   return (
-    <>
-      <div className="w-1/3 flex">
+    <main className="w-full">
+      <div className="flex justify-center mb-2">
+        <span>Search for hotel:</span>
+      </div>
+      <div className="flex w-full h-16 justify-center">
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button
@@ -84,11 +107,31 @@ export default function HotelSearch() {
           </PopoverContent>
         </Popover>
       </div>
-      <div className="flex justify-center mt-4">
-        <Button onClick={handleSearch}>
-          Ara
-        </Button>
+      <div className="flex justify-center flex-col">
+        <div className="flex justify-center mb-2">
+          <span>Select nationality:</span>
+        </div>
+        <div className="flex justify-center mb-2">
+          <Nationality />
+        </div>
+        <div className="flex justify-center mb-2">
+          <span>Select check-in date:</span>
+        </div>
+        <div className="flex justify-center mb-2">
+          <CheckInDatePicker />
+        </div>
       </div>
-    </>
+      <div className="flex justify-center flex-col mt-4">
+        <div className="flex justify-center mb-2">
+          <span>Select check-out date:</span>
+        </div>
+        <div className="flex justify-center mb-2">
+          <CheckOutDatePicker />
+        </div>
+      </div>
+      <div className="flex justify-center">
+        <Button onClick={handleSearch}>Ara</Button>
+      </div>
+    </main>
   );
 }
