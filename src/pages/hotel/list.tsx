@@ -1,9 +1,12 @@
+import SearchLocation from "@/components/SearchLocation";
 import SkeletonLoading from "@/components/SkeletonLoading";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import useHotelSearch from "@/hooks/useHotelList";
+import useIsMobile from "@/hooks/useIsMobile";
 import { AlertCircle } from "lucide-react";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
@@ -13,7 +16,7 @@ export interface ParsedListQuery extends ParsedUrlQuery {
   arrivalLocationId: string;
   checkIn: string | undefined;
   checkOut: string | undefined;
-  nationality: string | undefined;
+  nationality?: string | undefined;
   page: string | undefined;
   pageSize: string | undefined;
 }
@@ -28,6 +31,9 @@ export default function HotelList() {
   const nationality = query["nationality"];
   const page = query["page"];
   const pageSize = query["pageSize"];
+
+  const isMobile = useIsMobile();
+  const defaultValue = isMobile ? "" : "item-1";
 
   const { isLoading, isError, data } = useHotelSearch(
     checkIn,
@@ -52,10 +58,24 @@ export default function HotelList() {
 
   return (
     <div className="flex flex-col lg:flex-row dark:bg-slate-900">
-      {/* Sol Taraftaki Bölüm */}
-      <div className="w-full lg:w-1/4 bg-gray-50 p-4 rounded-lg dark:bg-slate-950 shadow-lg h-full">
-        <h2 className="text-lg font-semibold mb-4 md:h-36">Filtreler</h2>
-        {/* Filtrelerin içeriği buraya gelebilir */}
+      <div className="w-full lg:w-1/3 bg-gray-50 ml-4 rounded-lg dark:bg-slate-950 shadow-lg h-full lg:mt-5">
+        <div className="relative">
+          <img className="w-full" src="https://cdn5.travelconline.com/unsafe/fit-in/0x200/filters:quality(75):format(webp)/https%3A%2F%2Ftr2storage.blob.core.windows.net%2Fimagenes%2Feurope%2Fturkey%2Fantalya%2Fthumbnail.jpg" />
+          <p className="w-full absolute bottom-11 text-white text-center text-lg p-2 z-50">Accomodation in</p>
+          <p className="w-full absolute bottom-0 text-white text-center font-bold text-lg bg-black bg-opacity-50 p-7">{location}</p>
+        </div>
+        <div className="flex flex-col">
+          <div>
+            <Accordion defaultValue={defaultValue} type="single" collapsible className="w-full">
+              <AccordionItem value="item-1">
+                <AccordionTrigger className="justify-center">Filtreler</AccordionTrigger>
+                <AccordionContent>
+                  <SearchLocation />
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        </div>
       </div>
 
       {/* Sağ Taraftaki Bölüm */}
