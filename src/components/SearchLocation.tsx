@@ -1,19 +1,22 @@
-import { ChevronsUpDown, MapPin } from "lucide-react";
-import { Button } from "./ui/button";
-import { Popover, PopoverTrigger } from "./ui/popover";
-import { PopoverContent } from "@radix-ui/react-popover";
-import { Input } from "./ui/input";
-import { useState } from "react";
-import useLocations from "@/hooks/useLocations";
-import { useAtom } from "jotai";
-import { datePickerCheckInAtom, datePickerCheckOutAtom } from "@/stores/dateAtoms";
-import { format } from "date-fns";
-import { ParsedListQuery } from "@/pages/hotel/list";
-import { useRouter } from "next/router";
-import queryString from "query-string";
 import CheckInDatePicker from "./CheckInDatePicker";
 import CheckOutDatePicker from "./CheckOutDatePicker";
 import { Nationality } from "./Nationality";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Popover, PopoverTrigger } from "./ui/popover";
+import useLocations from "@/hooks/useLocations";
+import { ParsedListQuery } from "@/pages/hotel/list";
+import {
+  datePickerCheckInAtom,
+  datePickerCheckOutAtom,
+} from "@/stores/dateAtoms";
+import { PopoverContent } from "@radix-ui/react-popover";
+import { format } from "date-fns";
+import { useAtom } from "jotai";
+import { ChevronsUpDown, MapPin } from "lucide-react";
+import { useRouter } from "next/router";
+import queryString from "query-string";
+import { useState } from "react";
 
 export default function SearchLocation() {
   const [open, setOpen] = useState<boolean>(false);
@@ -133,4 +136,4 @@ export default function SearchLocation() {
       </main>
     </>
   );
-};
+}

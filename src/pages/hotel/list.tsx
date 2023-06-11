@@ -1,6 +1,11 @@
 import SearchLocation from "@/components/SearchLocation";
 import SkeletonLoading from "@/components/SkeletonLoading";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -60,9 +65,16 @@ export default function HotelList() {
     <div className="flex flex-col lg:flex-row dark:bg-slate-900">
       <div className="w-full lg:w-1/3 bg-gray-50 ml-4 rounded-lg dark:bg-slate-950 shadow-lg h-full lg:mt-5">
         <div className="relative">
-          <img className="w-full" src="https://cdn5.travelconline.com/unsafe/fit-in/0x200/filters:quality(75):format(webp)/https%3A%2F%2Ftr2storage.blob.core.windows.net%2Fimagenes%2Feurope%2Fturkey%2Fantalya%2Fthumbnail.jpg" />
-          <p className="w-full absolute bottom-11 text-white text-center text-lg p-2 z-50">Accomodation in</p>
-          <p className="w-full absolute bottom-0 text-white text-center font-bold text-lg bg-black bg-opacity-50 p-7">{location}</p>
+          <img
+            className="w-full"
+            src="https://cdn5.travelconline.com/unsafe/fit-in/0x200/filters:quality(75):format(webp)/https%3A%2F%2Ftr2storage.blob.core.windows.net%2Fimagenes%2Feurope%2Fturkey%2Fantalya%2Fthumbnail.jpg"
+          />
+          <p className="w-full absolute bottom-11 text-white text-center text-lg p-2 z-50">
+            Accomodation in
+          </p>
+          <p className="w-full absolute bottom-0 text-white text-center font-bold text-lg bg-black bg-opacity-50 p-7">
+            {location}
+          </p>
         </div>
         <div className="flex flex-col">
           <div>
@@ -73,7 +85,9 @@ export default function HotelList() {
               className="w-full"
             >
               <AccordionItem value="item-1">
-                <AccordionTrigger className="justify-center">Filtreler</AccordionTrigger>
+                <AccordionTrigger className="justify-center">
+                  Filtreler
+                </AccordionTrigger>
                 <AccordionContent>
                   <SearchLocation />
                 </AccordionContent>
