@@ -27,6 +27,7 @@ export default function HotelSearch() {
   const [query, setQuery] = useState("");
   const [dateCheckIn] = useAtom(datePickerCheckInAtom);
   const [dateCheckOut] = useAtom(datePickerCheckOutAtom);
+  const [nationality, setNationality] = useState("");
   const router = useRouter();
   const { isLoading, error, data } = useLocations(query);
 
@@ -36,19 +37,24 @@ export default function HotelSearch() {
   const formattedCheckOutDate = dateCheckOut
     ? format(dateCheckOut, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     : undefined;
-  console.log(formattedCheckInDate);
-  console.log(formattedCheckOutDate);
 
   const handleSearch = () => {
     const selectedLocation = data?.items.find((item) => item.title === query);
     if (selectedLocation) {
       const queryObj: ParsedListQuery = {
+        checkIn: formattedCheckInDate,
+        checkOut: formattedCheckOutDate,
         hotel: selectedLocation.title,
         locationId: selectedLocation.value,
+        nationality,
       };
+      console.log(queryObj);
       router.push(`/hotel/list?${queryString.stringify(queryObj)}`);
     }
   };
+
+
+  console.log("nationality", nationality);
 
   return (
     <main className="w-full">
@@ -112,7 +118,7 @@ export default function HotelSearch() {
           <span>Select nationality:</span>
         </div>
         <div className="flex justify-center mb-2">
-          <Nationality />
+          <Nationality value={nationality} setValue={setNationality} />
         </div>
         <div className="flex justify-center mb-2">
           <span>Select check-in date:</span>

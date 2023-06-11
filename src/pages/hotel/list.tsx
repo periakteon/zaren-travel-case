@@ -4,6 +4,10 @@ import { toast } from "react-toastify";
 
 export interface ParsedListQuery extends ParsedUrlQuery {
   hotel: string;
+  locationId: string;
+  checkIn: string | undefined;
+  checkOut: string | undefined;
+  nationality: string | undefined;
 }
 
 export default function HotelList() {
