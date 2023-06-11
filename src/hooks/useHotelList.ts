@@ -20,6 +20,7 @@ const responseSchema = z.object({
         city: z.object({
           name: z.string(),
         }),
+        address: z.string(),
         description: z.object({
           text: z.string(),
         }),
