@@ -101,7 +101,7 @@ export default function HotelSearch() {
                   setQuery(item.title);
                   setOpen(false);
                 }}
-                className="px-2 py-1 hover:cursor-pointer hover:bg-gray-300"
+                className="px-2 py-1 text-sm hover:cursor-pointer hover:bg-accent"
                 key={idx}
               >
                 <div className="flex flex-row">

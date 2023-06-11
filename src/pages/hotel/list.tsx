@@ -15,11 +15,17 @@ export default function HotelList() {
   const query = router.query as ParsedListQuery;
   const location = query["hotel"];
   const locationId = query["locationId"];
-
-  router.query;
+  const checkIn = query["checkIn"];
+  const checkOut = query["checkOut"];
+  const nationality = query["nationality"];
   return (
     <div>
       <h1>Hotel List</h1>
+      <div>location: {location}</div>
+      <div>locationId: {locationId}</div>
+      <div>checkIn: {checkIn}</div>
+      <div>checkOut: {checkOut}</div>
+      <div>nationality: {nationality}</div>
     </div>
   );
 }
