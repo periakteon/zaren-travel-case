@@ -65,7 +65,7 @@ export default function HotelSearch() {
               variant="outline"
               role="combobox"
               aria-expanded={open}
-              className="w-[400px] justify-between text-left flex flex-start"
+              className="w-[280px] justify-between text-left flex flex-start"
             >
               {open ? (
                 <>
@@ -86,7 +86,7 @@ export default function HotelSearch() {
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-[400px] p-0 max-h-96 overflow-y-scroll">
+          <PopoverContent className="w-[280px] p-0 max-h-96 overflow-y-scroll">
             <Input
               placeholder="Search hotel..."
               value={query}
@@ -132,8 +132,8 @@ export default function HotelSearch() {
           <CheckOutDatePicker />
         </div>
       </div>
-      <div className="flex justify-center">
-        <Button onClick={handleSearch}>Ara</Button>
+      <div className="flex justify-center mt-4">
+        <Button className="w-[280px]" onClick={handleSearch}>Ara</Button>
       </div>
     </main>
   );

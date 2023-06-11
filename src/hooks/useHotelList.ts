@@ -73,7 +73,7 @@ const searchHotels = async (
     },
     body: JSON.stringify({
       page: 1,
-      pageSize: 12,
+      pageSize: 10,
       sortBy: 4,
       checkAllotment: true,
       checkStopSale: true,

@@ -1,3 +1,4 @@
+import SkeletonLoading from "@/components/SkeletonLoading";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -35,7 +36,7 @@ export default function HotelList() {
   return (
     <div className="flex flex-col lg:flex-row dark:bg-slate-900">
       {/* Sol Taraftaki Bölüm */}
-      <div className="w-full lg:w-1/4 bg-gray-50 p-4 rounded-lg dark:bg-slate-950 shadow-lg">
+      <div className="w-full lg:w-1/4 bg-gray-50 p-4 rounded-lg dark:bg-slate-950 shadow-lg h-full">
         <h2 className="text-lg font-semibold mb-4 md:h-36">Filtreler</h2>
         {/* Filtrelerin içeriği buraya gelebilir */}
       </div>
@@ -47,6 +48,13 @@ export default function HotelList() {
         </h1>
         <h3 className="text-center">Among {data?.items.length} hotels</h3>
         <div className="grid grid-cols-1 gap-4 mt-10">
+          {isLoading && (
+            <>
+              <SkeletonLoading />
+              <SkeletonLoading />
+              <SkeletonLoading />
+            </>
+          )}
           {/* Hotel Bilgileri Sağ Bölüm */}
           {data?.items.map((item, id) => (
             <>
