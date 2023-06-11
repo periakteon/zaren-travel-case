@@ -133,7 +133,9 @@ export default function HotelSearch() {
         </div>
       </div>
       <div className="flex justify-center mt-4">
-        <Button className="w-[280px]" onClick={handleSearch}>Ara</Button>
+        <Button className="w-[280px]" onClick={handleSearch}>
+          Ara
+        </Button>
       </div>
     </main>
   );

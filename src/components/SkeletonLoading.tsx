@@ -50,6 +50,5 @@ export default function SkeletonLoading() {
         <Skeleton className="h-10 w-32" />
       </div>
     </div>
-
-  )
+  );
 }

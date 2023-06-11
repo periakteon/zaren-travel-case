@@ -2,7 +2,6 @@ import SkeletonLoading from "@/components/SkeletonLoading";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
 import useHotelSearch from "@/hooks/useHotelList";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
@@ -30,8 +29,6 @@ export default function HotelList() {
     arrivalLocationId,
     nationality,
   );
-
-  console.log("REACT QUERY", data);
 
   return (
     <div className="flex flex-col lg:flex-row dark:bg-slate-900">
