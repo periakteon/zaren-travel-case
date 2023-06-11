@@ -72,13 +72,17 @@ export default function HotelList() {
               <SkeletonLoading />
             </>
           )}
-          {isError && <div className="w-1/3 m-auto"><Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>
-              Something went wrong. Please try again.
-            </AlertDescription>
-          </Alert></div>}
+          {isError && (
+            <div className="w-1/3 m-auto">
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>
+                  Something went wrong. Please try again.
+                </AlertDescription>
+              </Alert>
+            </div>
+          )}
           {/* Hotel Bilgileri Sağ Bölüm */}
           {data?.items.map((item, id) => (
             <>

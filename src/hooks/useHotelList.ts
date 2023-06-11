@@ -4,14 +4,16 @@ import { z } from "zod";
 const responseSchema = z.object({
   data: z.object({
     expiresOn: z.string(),
-    filterParams: z.object({
-      price: z.object({
-        min: z.number(),
-        max: z.number(),
-      }),
-      ratings: z.array(z.number()),
-      stars: z.array(z.number()),
-    }).nullable(),
+    filterParams: z
+      .object({
+        price: z.object({
+          min: z.number(),
+          max: z.number(),
+        }),
+        ratings: z.array(z.number()),
+        stars: z.array(z.number()),
+      })
+      .nullable(),
     items: z.array(
       z.object({
         country: z.object({
@@ -122,8 +124,24 @@ export default function useHotelSearch(
   pageSize: string | undefined,
 ) {
   return useQuery(
-    ["hotelSearch", checkIn, checkOut, arrivalLocationId, nationality, page, pageSize],
-    () => searchHotels(checkIn, checkOut, arrivalLocationId, nationality, page, pageSize),
+    [
+      "hotelSearch",
+      checkIn,
+      checkOut,
+      arrivalLocationId,
+      nationality,
+      page,
+      pageSize,
+    ],
+    () =>
+      searchHotels(
+        checkIn,
+        checkOut,
+        arrivalLocationId,
+        nationality,
+        page,
+        pageSize,
+      ),
     {
       enabled: true,
       retry: 3,
