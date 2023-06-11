@@ -31,8 +31,6 @@ export function Nationality({
     setOpen(false);
   };
 
-  console.log(value);
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -43,9 +41,12 @@ export function Nationality({
           className="w-[280px] justify-between"
         >
           {value
-            ? `${flags.find((f) => f.code === value)?.flag} ${flags.find((f) => f.code === value)?.name
-            }`
-            : `${flags.find((f) => f.code === "TR")?.flag} ${flags.find((f) => f.code === "TR")?.name}`}
+            ? `${flags.find((f) => f.code === value)?.flag} ${
+                flags.find((f) => f.code === value)?.name
+              }`
+            : `${flags.find((f) => f.code === "TR")?.flag} ${
+                flags.find((f) => f.code === "TR")?.name
+              }`}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>

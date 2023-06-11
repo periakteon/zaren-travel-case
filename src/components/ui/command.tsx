@@ -1,5 +1,3 @@
-"use client";
-
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { DialogProps } from "@radix-ui/react-dialog";

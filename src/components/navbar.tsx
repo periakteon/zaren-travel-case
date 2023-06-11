@@ -10,7 +10,6 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 export default function Navigation() {
-
   // TODO: EN SOLA LOGO EKLE
   // TODO: EN SAĞA HOME, DİL SEÇENEĞİ, MODE TOGGLE EKLE
   return (

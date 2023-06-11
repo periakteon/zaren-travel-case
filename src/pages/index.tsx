@@ -48,13 +48,9 @@ export default function HotelSearch() {
         locationId: selectedLocation.value,
         nationality,
       };
-      console.log(queryObj);
       router.push(`/hotel/list?${queryString.stringify(queryObj)}`);
     }
   };
-
-
-  console.log("nationality", nationality);
 
   return (
     <main className="w-full">

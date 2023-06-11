@@ -1,7 +1,7 @@
 import Layout from "@/components/layout";
 import "@/styles/globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from "next-themes";
 import type { AppProps } from "next/app";
 import { ToastContainer } from "react-toastify";
