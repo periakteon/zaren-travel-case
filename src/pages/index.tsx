@@ -23,11 +23,11 @@ import queryString from "query-string";
 import { useState } from "react";
 
 export default function HotelSearch() {
-  const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState<boolean>(false);
+  const [query, setQuery] = useState<string>("");
   const [dateCheckIn] = useAtom(datePickerCheckInAtom);
   const [dateCheckOut] = useAtom(datePickerCheckOutAtom);
-  const [nationality, setNationality] = useState("TR");
+  const [nationality, setNationality] = useState<string>("TR");
   const router = useRouter();
   const { isLoading, error, data } = useLocations(query);
 
