@@ -59,13 +59,16 @@ export default function HotelList() {
     pageSize,
   );
 
-  // filter params aktif olduğunda page'i 0'a çek ki 2.sayfadan veri çekmeye çalışıp boş veri getirmesin
-  //
-  const { isLoading: filterIsLoading, isError: filterIsError, data: filterData } = useHotelFilter(data?.cacheKey,
-    filterParams,
-    page,
-    pageSize
-  );
+  // TODO:filter params aktif olduğunda page'i 0'a çek ki 2.sayfadan veri çekmeye çalışıp boş veri getirmesin
+  // TODO: tekrar location search edilince location data'sına dönsün aksi takdirde filterData'ya dön
+  // TODO: filterData action'a geçtiğinde filterData'yı göster
+  const {
+    isLoading: filterIsLoading,
+    isError: filterIsError,
+    data: filterData,
+  } = useHotelFilter(data?.cacheKey, filterParams, page, pageSize);
+
+  console.log("filter data", filterData);
 
   const previousPage = () => {
     const currentPage = parseInt(page || "1");
@@ -87,12 +90,10 @@ export default function HotelList() {
             className="w-full"
             src="https://cdn5.travelconline.com/unsafe/fit-in/0x200/filters:quality(75):format(webp)/https%3A%2F%2Ftr2storage.blob.core.windows.net%2Fimagenes%2Feurope%2Fturkey%2Fantalya%2Fthumbnail.jpg"
           />
-          <p className="w-full absolute bottom-11 text-white text-center text-lg p-2 z-50">
-            Accomodation in
-          </p>
-          <p className="w-full absolute bottom-0 text-white text-center font-bold text-lg bg-black bg-opacity-50 p-7">
-            {location}
-          </p>
+          <div className="absolute bottom-0 w-full text-center text-white bg-gradient-to-t from-black dark:from-slate-900 to-transparent bg-opacity-40">
+            <p className="text-lg p-2 md:p-4">Accomodation in</p>
+            <p className="font-bold -mt-6 text-lg p-2 md:p-4">{location}</p>
+          </div>
         </div>
         <div className="flex flex-col">
           <div>
@@ -111,20 +112,32 @@ export default function HotelList() {
                   <Separator className="mt-4" />
                   <div>
                     <h1 className="text-xl ml-4 mt-4 font-bold">Hotel Type</h1>
-                    {data?.filterParams?.types && Object.entries(data?.filterParams?.types).map(([key, value], id) => (
-                      <div key={id}>
-                        <Checkbox id="terms" onCheckedChange={(e) => setFilterParams({
-                          ...filterParams,
-                          types: e.valueOf() ? [...filterParams.types, key] : filterParams.types.filter((item) => item !== key)
-                        })} />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          {value}
-                        </label>
-                      </div>
-                    ))}
+                    {data?.filterParams?.types &&
+                      Object.entries(data?.filterParams?.types).map(
+                        ([key, value], id) => (
+                          <div key={id}>
+                            <Checkbox
+                              id="terms"
+                              onCheckedChange={(e) =>
+                                setFilterParams({
+                                  ...filterParams,
+                                  types: e.valueOf()
+                                    ? [...filterParams.types, key]
+                                    : filterParams.types.filter(
+                                        (item) => item !== key,
+                                      ),
+                                })
+                              }
+                            />
+                            <label
+                              htmlFor="terms"
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                              {value}
+                            </label>
+                          </div>
+                        ),
+                      )}
                   </div>
                 </AccordionContent>
               </AccordionItem>

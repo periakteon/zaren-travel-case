@@ -107,9 +107,7 @@ const searchHotels = async (
   }
 
   const data = await response.json();
-  console.log(data);
   const parsedData = responseSchema.safeParse(data);
-  console.log("parsedData", parsedData);
 
   if (!parsedData.success) {
     throw new Error("Failed to parse hotel list");
