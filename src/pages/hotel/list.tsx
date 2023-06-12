@@ -17,7 +17,7 @@ import useIsMobile from "@/hooks/useIsMobile";
 import { AlertCircle } from "lucide-react";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export interface ParsedListQuery extends ParsedUrlQuery {
   hotel: string;
@@ -39,6 +39,7 @@ export default function HotelList() {
   const nationality = query["nationality"];
   const page = query["page"];
   const pageSize = query["pageSize"];
+  const isMobile = useIsMobile();
   const [filterParams, setFilterParams] = useState<FilterParams>({
     amenities: [],
     types: [],
@@ -46,9 +47,6 @@ export default function HotelList() {
     ratings: [],
     stars: [],
   });
-
-  const isMobile = useIsMobile();
-  const defaultValue = isMobile ? " " : "item-1";
 
   const { isLoading, isError, data } = useHotelSearch(
     checkIn,
@@ -65,8 +63,11 @@ export default function HotelList() {
     data: filterData,
   } = useHotelFilter(data?.cacheKey, filterParams, page, pageSize);
 
+  const defaultValue = isMobile ? " " : "item-1";
+
   const filteredItems = filterData ? filterData.items : data?.items;
   const filteredItemsLength = filteredItems?.length || 0;
+  const isFiltered = !!filterData;
 
   const resetFilter = () => {
     setFilterParams({
@@ -88,16 +89,18 @@ export default function HotelList() {
   const previousPage = () => {
     const currentPage = parseInt(page || "1");
     const newPage = currentPage - 1;
-    router.push({ query: { ...query, page: newPage.toString(), ...filterParams } });
+    router.push({
+      query: { ...query, page: newPage.toString(), ...filterParams },
+    });
   };
 
   const nextPage = () => {
     const currentPage = parseInt(page || "1");
     const newPage = currentPage + 1;
-    router.push({ query: { ...query, page: newPage.toString(), ...filterParams } });
+    router.push({
+      query: { ...query, page: newPage.toString(), ...filterParams },
+    });
   };
-
-  const isFiltered = !!filterData;
 
   return (
     <div className="flex flex-col lg:flex-row dark:bg-slate-900">
@@ -130,31 +133,35 @@ export default function HotelList() {
                   <div>
                     <h1 className="text-2xl ml-4 mt-4 font-bold">Hotel Type</h1>
                     {data?.filterParams?.types &&
-                      Object.entries(data?.filterParams?.types).map(([key, value], idx) => {
-                        const isChecked = filterParams.types.includes(key);
-                        return (
-                          <div key={idx} className="ml-4 my-4">
-                            <Checkbox
-                              id={`hotel-type-${idx}`}
-                              checked={isChecked}
-                              onCheckedChange={(e) =>
-                                setFilterParams({
-                                  ...filterParams,
-                                  types: e.valueOf()
-                                    ? [...filterParams.types, key]
-                                    : filterParams.types.filter((item) => item !== key),
-                                })
-                              }
-                            />
-                            <label
-                              htmlFor={`hotel-type-${idx}`}
-                              className="ml-2 text-lg leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                            >
-                              {value}
-                            </label>
-                          </div>
-                        );
-                      })}
+                      Object.entries(data?.filterParams?.types).map(
+                        ([key, value], idx) => {
+                          const isChecked = filterParams.types.includes(key);
+                          return (
+                            <div key={idx} className="ml-4 my-4">
+                              <Checkbox
+                                id={`hotel-type-${idx}`}
+                                checked={isChecked}
+                                onCheckedChange={(e) =>
+                                  setFilterParams({
+                                    ...filterParams,
+                                    types: e.valueOf()
+                                      ? [...filterParams.types, key]
+                                      : filterParams.types.filter(
+                                          (item) => item !== key,
+                                        ),
+                                  })
+                                }
+                              />
+                              <label
+                                htmlFor={`hotel-type-${idx}`}
+                                className="ml-2 text-lg leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                              >
+                                {value}
+                              </label>
+                            </div>
+                          );
+                        },
+                      )}
                   </div>
                   <Separator className="mt-4" />
                   <div>
@@ -163,27 +170,35 @@ export default function HotelList() {
                     </h1>
                     <div className="flex flex-wrap">
                       {data?.filterParams?.ratings &&
-                        Object.entries(data?.filterParams?.ratings).map(([key, value], idx) => {
-                          const isButtonClicked = filterParams.ratings.includes(key);
-                          return (
-                            <Button
-                              key={idx}
-                              id="hotel-type"
-                              onClick={(e) =>
-                                setFilterParams((prevParams) => ({
-                                  ...prevParams,
-                                  ratings: isButtonClicked
-                                    ? prevParams.ratings.filter((item) => item !== key)
-                                    : [...prevParams.ratings, key],
-                                }))
-                              }
-                              className={`ml-4 my-4 text-md ${isButtonClicked && value ? 'text-white bg-green-600 dark:bg-green-600' : ''
+                        Object.entries(data?.filterParams?.ratings).map(
+                          ([key, value], idx) => {
+                            const isButtonClicked =
+                              filterParams.ratings.includes(key);
+                            return (
+                              <Button
+                                key={idx}
+                                id="hotel-type"
+                                onClick={(e) =>
+                                  setFilterParams((prevParams) => ({
+                                    ...prevParams,
+                                    ratings: isButtonClicked
+                                      ? prevParams.ratings.filter(
+                                          (item) => item !== key,
+                                        )
+                                      : [...prevParams.ratings, key],
+                                  }))
+                                }
+                                className={`ml-4 my-4 text-md ${
+                                  isButtonClicked && value
+                                    ? "text-white bg-green-600 dark:bg-green-600"
+                                    : ""
                                 }`}
-                            >
-                              👍 {value}
-                            </Button>
-                          );
-                        })}
+                              >
+                                👍 {value}
+                              </Button>
+                            );
+                          },
+                        )}
                     </div>
                   </div>
                   <Separator className="mt-4" />
@@ -193,27 +208,35 @@ export default function HotelList() {
                     </h1>
                     <div className="flex flex-wrap">
                       {data?.filterParams?.stars &&
-                        Object.entries(data?.filterParams?.stars).map(([key, value], idx) => {
-                          const isButtonClicked = filterParams.stars.includes(key);
-                          return (
-                            <Button
-                              key={idx}
-                              id="hotel-type"
-                              onClick={(e) =>
-                                setFilterParams((prevParams) => ({
-                                  ...prevParams,
-                                  stars: isButtonClicked
-                                    ? prevParams.stars.filter((item) => item !== key)
-                                    : [...prevParams.stars, key],
-                                }))
-                              }
-                              className={`ml-4 my-4 text-md ${isButtonClicked && value ? 'text-white bg-green-600 dark:bg-green-600' : ''
+                        Object.entries(data?.filterParams?.stars).map(
+                          ([key, value], idx) => {
+                            const isButtonClicked =
+                              filterParams.stars.includes(key);
+                            return (
+                              <Button
+                                key={idx}
+                                id="hotel-type"
+                                onClick={(e) =>
+                                  setFilterParams((prevParams) => ({
+                                    ...prevParams,
+                                    stars: isButtonClicked
+                                      ? prevParams.stars.filter(
+                                          (item) => item !== key,
+                                        )
+                                      : [...prevParams.stars, key],
+                                  }))
+                                }
+                                className={`ml-4 my-4 text-md ${
+                                  isButtonClicked && value
+                                    ? "text-white bg-green-600 dark:bg-green-600"
+                                    : ""
                                 }`}
-                            >
-                              ⭐ {value}
-                            </Button>
-                          );
-                        })}
+                              >
+                                ⭐ {value}
+                              </Button>
+                            );
+                          },
+                        )}
                     </div>
                   </div>
                   <Button
