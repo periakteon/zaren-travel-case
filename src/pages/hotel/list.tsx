@@ -204,7 +204,7 @@ export default function HotelList() {
                               className={`ml-4 my-4 text-md ${isButtonClicked && value ? 'text-white bg-green-600 dark:bg-green-600' : ''
                                 }`}
                             >
-                              👍 {value}
+                              ⭐ {value}
                             </Button>
                           );
                         })}
