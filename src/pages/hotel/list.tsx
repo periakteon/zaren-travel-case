@@ -39,7 +39,6 @@ export default function HotelList() {
   const nationality = query["nationality"];
   const page = query["page"];
   const pageSize = query["pageSize"];
-  const [currentPage, setCurrentPage] = useState<number>(parseInt(page || "1"));
   const [filterParams, setFilterParams] = useState<FilterParams>({
     amenities: [],
     types: [],
@@ -76,6 +75,13 @@ export default function HotelList() {
       range: [],
       ratings: [],
       stars: [],
+    });
+    router.push({
+      query: {
+        ...query,
+        page: "1",
+        ...filterParams,
+      },
     });
   };
 

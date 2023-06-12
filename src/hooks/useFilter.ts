@@ -3,6 +3,7 @@ import { z } from "zod";
 
 const responseSchema = z.object({
   data: z.object({
+    cacheKey: z.string(),
     expiresOn: z.string(),
     filterParams: z
       .object({
@@ -12,6 +13,7 @@ const responseSchema = z.object({
         }),
         ratings: z.array(z.number()),
         stars: z.array(z.number()),
+        types: z.record(z.string()),
       })
       .nullable(),
     items: z.array(
